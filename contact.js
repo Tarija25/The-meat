@@ -1,6 +1,6 @@
 // 🌍 Preserve your map setup
 function initMap() {
-  const location = { lat: 34.0522, lng: -118.2437 }; // Los Angeles
+  const location = { lat: -21.5355, lng: -64.7290 }; // Los Angeles
   const map = new google.maps.Map(document.getElementById("map"), {
     zoom: 6,
     center: location,
@@ -40,4 +40,5 @@ document.addEventListener('DOMContentLoaded', function () {
       console.error(err);
     });
   });
+
 });
