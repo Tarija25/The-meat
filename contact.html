@@ -59,11 +59,35 @@
       </form>
     </div>
   </div>
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
 
+  <!-- Initialize Firebase & Firestore -->
+  <script>
+    // Replace the following with your Firebase project config
+    const firebaseConfig = {
+      apiKey: "AIzaSyC92EE69uHAyX5BVTXl-A3nTcJM3VuYQTM",
+      authDomain: "lacarnetarija-4c0fa.firebaseapp.com",
+      projectId: "lacarnetarija-4c0fa",
+      storageBucket: "lacarnetarija-4c0fa.firebasestorage.app",
+      messagingSenderId: "538861730258",
+      appId: "1:538861730258:web:6568b230398aa565f3300b"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Initialize Firestore
+    const db = firebase.firestore();
+  </script
+  
   <script src="contact.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap" async defer></script>
 
 </body>
 
 </html>
+
 
