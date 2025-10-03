@@ -1,70 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contacto | Lacarne</title>
   <link rel="icon" type="image/png" href="favicon-32x32.png">
-<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic|Droid+Serif:400,700,400italic,700italic" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Droid+Serif" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" crossorigin="anonymous" />
   <style>
-    .map {
-      width: 100%;
-      height: 300px;
-      border: 1px solid #ccc;
-      margin-top: 10px;
-    }
+    .map { width: 100%; height: 300px; border: 1px solid #ccc; margin-top: 10px; border-radius: 8px; }
+    .form-wrapper { max-width: 500px; margin: auto; padding: 20px; }
+    input, textarea, #contact-btn { width: 100%; padding: 10px; margin-top: 8px; font-size: 1rem; }
   </style>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
 </head>
 <body>
-
-  <div class="title">
-    <header> THE MEAT </header>
-  </div>
-
+  <div class="title"><header>THE MEAT</header></div>
   <div class="navbar">
-    <a href="index.html"> INICIO </a>
-    <a href="menu.html"> MENU </a>
-    <a href="recipe.html"> RECETAS </a>
-    <a href="contact.html"> CONTACTO </a>
+    <a href="index.html">INICIO</a>
+    <a href="menu.html">MENU</a>
+    <a href="recipe.html">RECETAS</a>
+    <a href="contact.html">CONTACTO</a>
   </div>
 
   <div class="contact-form">
     <div class="map-container">
-      <h1> QUEDATE EN CONTACTO </h1>
+      <h1>QUEDATE EN CONTACTO</h1>
       <div class="contact-wrap">
         <div class="contact-info">
           <div class="contact1"><i class="fas fa-map-marker-alt"></i><p>La ciudad de Tarija</p></div>
-          <div class="contact2"><i class="fab fa-github"></i><p> https://tarija25.github.io/The-meat/</p></div>
-          <div class="contact3"><i class="fas fa-envelope"></i><p> Themeattarija@gmail.com</p></div>
+          <div class="contact2"><i class="fab fa-github"></i><p>https://tarija25.github.io/The-meat/</p></div>
+          <div class="contact3"><i class="fas fa-envelope"></i><p>Themeattarija@gmail.com</p></div>
         </div>
         <div class="map" id="map"></div>
       </div>
     </div>
 
     <div class="form-wrapper">
-      <h1> Contactactanos</h1>
+      <h1>Contactactanos</h1>
       <form id="contact-form">
-        <label for="name">Nombre</label><br>
-        <input type="text" id="name" required><br>
-
-        <label for="email">Gmail</label><br>
-        <input type="email" id="email" required><br>
-
-        <label for="msg">Contactanos</label><br>
-        <textarea id="msg" required></textarea><br>
-
+        <label for="name">Nombre</label>
+        <input type="text" id="name" required>
+        <label for="email">Gmail</label>
+        <input type="email" id="email" required>
+        <label for="msg">Contactanos</label>
+        <textarea id="msg" required></textarea>
         <input type="submit" id="contact-btn" value="Send">
       </form>
     </div>
   </div>
 
-  <script src="contact.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap" async defer></script>
+  <!-- Your JS logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
+    const firebaseConfig = {
+      apiKey: "AIzaSyDuq5Eb6hQtGuwE0_p8MxzFugXjus3xxbg",
+      authDomain: "lacarnetarija.firebaseapp.com",
+      projectId: "lacarnetarija",
+      storageBucket: "lacarnetarija.firebasestorage.app",
+      messagingSenderId: "259295299386",
+      appId: "1:259295299386:web:8fdbc2c38cd31a5075b203",
+      measurementId: "G-JK47LG2J5R"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    document.getElementById("contact-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const msg = document.getElementById("msg").value.trim();
+
+      try {
+        await addDoc(collection(db, "contacts"), {
+          name,
+          email,
+          msg,
+          timestamp: new Date()
+        });
+        alert("Mensaje enviado correctamente ✅");
+        document.getElementById("contact-form").reset();
+      } catch (error) {
+        console.error("Error al enviar:", error);
+        alert("Hubo un error al enviar el mensaje ❌");
+      }
+    });
+
+    window.initMap = function () {
+      const location = { lat: -21.535, lng: -64.729 };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 13,
+        center: location,
+      });
+      new google.maps.Marker({ position: location, map: map });
+    };
+  </script>
+
+  <!-- Google Maps API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
 </body>
 </html>
-
-
-
