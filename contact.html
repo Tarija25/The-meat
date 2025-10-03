@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contacto | Lacarne</title>
-  <link rel="icon" type="image/png" href="favicon-32x32.png">
-  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900|Droid+Serif:400,700" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
   <style>
-    .map { width: 100%; height: 300px; border: 1px solid #ccc; margin-top: 10px; border-radius: 8px; }
+    #map { height: 300px; width: 100%; margin-top: 10px; border-radius: 8px; }
     .form-wrapper { max-width: 500px; margin: auto; padding: 20px; }
     input, textarea, #contact-btn {
       width: 100%;
@@ -35,31 +35,30 @@
   </div>
 
   <div class="contact-form">
-    <div class="map-container">
-      <h1>QUEDATE EN CONTACTO</h1>
-      <div class="contact-wrap">
-        <div class="contact-info">
-          <div class="contact1"><i class="fas fa-map-marker-alt"></i><p>La ciudad de Tarija</p></div>
-          <div class="contact2"><i class="fab fa-github"></i><p>https://tarija25.github.io/The-meat/</p></div>
-          <div class="contact3"><i class="fas fa-envelope"></i><p>Themeattarija@gmail.com</p></div>
-        </div>
-        <div class="map" id="map"></div>
-      </div>
+    <h1>QUEDATE EN CONTACTO</h1>
+    <div class="contact-info">
+      <p><i class="fas fa-map-marker-alt"></i> La ciudad de Tarija</p>
+      <p><i class="fab fa-github"></i> https://tarija25.github.io/The-meat/</p>
+      <p><i class="fas fa-envelope"></i> Themeattarija@gmail.com</p>
     </div>
+    <div id="map"></div>
 
     <div class="form-wrapper">
       <h1>Contactactanos</h1>
       <form id="contact-form">
         <label for="name">Nombre</label>
-        <input type="text" id="name" required>
+        <input type="text" id="name" required />
         <label for="email">Gmail</label>
-        <input type="email" id="email" required>
+        <input type="email" id="email" required />
         <label for="msg">Contactanos</label>
         <textarea id="msg" required></textarea>
-        <input type="submit" id="contact-btn" value="Send">
+        <input type="submit" id="contact-btn" value="Send" />
       </form>
     </div>
   </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <!-- Firebase + Map Logic -->
   <script type="module">
@@ -100,18 +99,12 @@
       }
     });
 
-    // Make initMap globally accessible
-    window.initMap = function () {
-      const location = { lat: -21.535, lng: -64.729 };
-      const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 13,
-        center: location,
-      });
-      new google.maps.Marker({ position: location, map: map });
-    };
+    // 🗺️ Leaflet Map centered on Tarija
+    const map = L.map('map').setView([-21.535, -64.729], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    L.marker([-21.535, -64.729]).addTo(map).bindPopup('Tarija, Bolivia').openPopup();
   </script>
-
-  <!-- Google Maps API (replace with your actual key) -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
 </body>
 </html>
